@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Data
 public class ProjectDTO {
-
+    private Long id;
     private String projectName;
     private String projectCode;
     private UserDTO assignedManager;
