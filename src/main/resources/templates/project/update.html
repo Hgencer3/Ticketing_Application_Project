@@ -111,7 +111,7 @@
                         <div class="col-md-12">
                             <section class="panel">
                                 <header class="panel-heading">
-                                    <h2 class="panel-title">User List</h2>
+                                    <h2 class="panel-title">Project List</h2>
                                 </header>
                                 <div class="panel-body">
                                     <div class="table-responsive">
@@ -127,16 +127,31 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr th:each="project: ${projects}">
+                                            <tr th:each="project : ${projects}">
                                                 <td th:text="${project.projectCode}"></td>
                                                 <td th:text="${project.projectName}"></td>
-                                                <td th:text="${#temporals.format(project.projectStartDate,'MM.dd.yyy')+' - '+#temporals.format(project.projectEndDate,'MM.dd.yyy')}")></td>
-                                                <td th:text="${project.assignedManager.firstName+' '+project.assignedManager.lastName}"></td>
+                                                <td th:text="${#temporals.format(project.projectStartDate,'MM.dd.yyyy') + '-' + #temporals.format(project.projectEndDate,'MM.dd.yyyy')}"></td>
+                                                <td th:text="${project.assignedManager.firstName + ' ' + project.assignedManager.lastName}"></td>
                                                 <td th:text="${project.projectStatus.value}"></td>
                                                 <td>
-                                                    <a th:href="@{/project/update/{id}(id=${project.getProjectCode()})}"><button type="button" class="btn btn-warning rounded-0">Update</button></a>
-                                                    <a th:href="@{/project/delete/{id}(id=${project.getProjectCode()})}"><button type="button" class="btn btn-danger rounded-0">Delete</button></a>
-                                                    <a th:href="@{/project/complete/{id}(id=${project.getProjectCode()})}"><button type="button" class="btn btn-info rounded-0">Complete</button></a>
+                                                    <a th:if="${project.projectStatus.value != 'Complete'}"
+                                                       class="btn btn-warning rounded-0"
+                                                       th:href="@{/project/complete/{id}(id=${project.getProjectCode()})}">Update
+                                                    </a>
+                                                    <a th:if="${project.projectStatus.value == 'Complete'}"
+                                                       class="btn btn-warning rounded-0 disabled-button">Update
+                                                    </a>
+                                                    <a th:href="@{/project/delete/{id}(id=${project.getProjectCode()})}">
+                                                        <button type="button" class="btn btn-danger rounded-0">Delete
+                                                        </button>
+                                                    </a>
+                                                    <a th:if="${project.unfinishedTaskCounts == 0 && project.projectStatus.value != 'Complete'}"
+                                                       class="btn btn-info rounded-0"
+                                                       th:href="@{/project/complete/{id}(id=${project.getProjectCode()})}">Complete
+                                                    </a>
+                                                    <a th:if="${project.unfinishedTaskCounts > 0 || project.projectStatus.value == 'Complete'}"
+                                                       class="btn btn-info rounded-0 disabled-button">Complete
+                                                    </a>
                                                 </td>
                                             </tr>
                                             </tbody>

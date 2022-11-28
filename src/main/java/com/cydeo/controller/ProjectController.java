@@ -29,7 +29,7 @@ public class ProjectController {
     public String createProject(Model model){
 
         model.addAttribute("project",new ProjectDTO());
-        model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("projects",projectService.listAllProjectDetails());
         model.addAttribute("managers",userService.listAllByRole("manager"));
 
         return "/project/create";
@@ -39,7 +39,7 @@ public class ProjectController {
 
         if (bindingResult.hasErrors()) {
 
-            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("projects", projectService.listAllProjectDetails());
             model.addAttribute("managers", userService.listAllByRole("manager"));
 
             return "/project/create";
@@ -66,7 +66,7 @@ public class ProjectController {
     public String editProject(@PathVariable("projectCode") String projectCode,Model model){
 
         model.addAttribute("project",projectService.getByProjectCode(projectCode));
-        model.addAttribute("projects",projectService.listAllProjects());
+        model.addAttribute("projects",projectService.listAllProjectDetails());
         model.addAttribute("managers",userService.listAllByRole("manager"));
 
         return "project/update";
@@ -76,7 +76,7 @@ public class ProjectController {
     public String updateProject(@ModelAttribute("project") ProjectDTO project, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("projects", projectService.listAllProjects());
+            model.addAttribute("projects", projectService.listAllProjectDetails());
             model.addAttribute("managers", userService.listAllByRole("manager"));
 
             return "/project/update";
@@ -87,8 +87,6 @@ public class ProjectController {
     @GetMapping("/manager/project-status")
     public String getProjectByManager(Model model){
 
-    //    UserDTO manager = userService.findByUserName("john@cydeo.com");
-
         List<ProjectDTO> projects = projectService.listAllProjectDetails();
 
         model.addAttribute("projects",projects);
@@ -96,11 +94,11 @@ public class ProjectController {
         return "/manager/project-status";
     }
 
-//    @GetMapping("/manager/complete/{projectCode}")
-//    public String managerCompleteProject(@PathVariable("projectCode") String projectCode) {
-//        projectService.complete(projectCode);
-//        return "redirect:/project/manager/project-status";
-//    }
+    @GetMapping("/manager/complete/{projectCode}")
+    public String managerCompleteProject(@PathVariable("projectCode") String projectCode) {
+        projectService.complete(projectCode);
+        return "redirect:/project/manager/project-status";
+    }
 
 
 
