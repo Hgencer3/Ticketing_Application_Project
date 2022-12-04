@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         dto.setEnabled(true);
         User obj=userMapper.convertToEntity(dto);
-        obj.setPassword(passwordEncoder.encode(obj.getPassword()));
+        obj.setPassWord(passwordEncoder.encode(obj.getPassWord()));
         userRepository.save(obj);
     }
 
